@@ -3,7 +3,7 @@
 
 **CBOT Internship Case Study #1 — A production-style Retrieval-Augmented Generation (RAG) support agent built on n8n, orchestrating a full knowledge pipeline from ingestion to real-time customer conversation.**
 
-> **TL;DR:** RAG-based Pegasus Airlines support agent — 3 cooperating n8n workflows, a 139-chunk vector store, Redis-backed session memory, 2 live API integrations (weather & currency), an 11-rule guardrail system prompt, and 25+ manually written test scenarios used to find and fix real failure modes (embedding dilution, negation reversal, hallucination).
+> **TL;DR:** RAG-based Pegasus Airlines support agent — 3 cooperating n8n workflows, a 292-chunk vector store, Redis-backed session memory, 2 live API integrations (weather & currency), an 11-rule guardrail system prompt, and 25+ manually written test scenarios used to find and fix real failure modes (embedding dilution, negation reversal, hallucination).
 
 ---
 
@@ -22,7 +22,7 @@ Rather than a single monolithic workflow, PEGA is architected as **three coopera
 ## ✨ Key Features
 
 - **Retrieval-Augmented Generation:** Combines OpenAI embeddings with a Simple Vector Store so responses are grounded in real Pegasus Airlines knowledge, not model hallucination.
-- **Micro-Chunked Knowledge Base:** 139 finely segmented knowledge items, restructured from an initial coarse layout after diagnosing a real retrieval failure (see *Embedding Dilution* below) — a concrete example of iterating on architecture based on evidence, not just intuition.
+- **Micro-Chunked Knowledge Base:** 292 finely segmented knowledge items, restructured from an initial coarse layout after diagnosing a real retrieval failure (see *Embedding Dilution* below) — a concrete example of iterating on architecture based on evidence, not just intuition.
 - **Live External Data:** Two real-time API integrations (weather and currency conversion) so the agent can answer time-sensitive questions instead of relying on static or outdated knowledge.
 - **Session-Based Conversation Memory:** Redis-backed chat memory keeps track of each user's conversation history independently of the knowledge base, enabling multi-turn, context-aware dialogue.
 - **Modular Workflow Architecture:** Ingestion, refresh, and conversation are fully decoupled into separate n8n workflows for maintainability and independent scheduling.
@@ -36,7 +36,7 @@ Rather than a single monolithic workflow, PEGA is architected as **three coopera
 ## 🧩 Workflow Architecture
 
 ### 1. 📥 Load Knowledge Base
-Ingests the raw Pegasus Airlines knowledge base, splits it into 139 micro-chunks, generates OpenAI embeddings for each chunk, and writes them into the Simple Vector Store — establishing the retrieval foundation for the agent.
+Ingests the raw Pegasus Airlines knowledge base, splits it into 292 micro-chunks, generates OpenAI embeddings for each chunk, and writes them into the Simple Vector Store — establishing the retrieval foundation for the agent.
 
 ### 2. 🔄 Auto Data Refresh
 A scheduled workflow that scrapes the live source website (HTTP request → HTML extraction via CSS selector → content parsing) and appends newly discovered information to the vector store, keeping retrieved answers current as underlying information changes — without needing to rerun ingestion manually or wait for a manual data update.
@@ -127,7 +127,7 @@ In your n8n instance, import the three workflow files in this order:
 Set your OpenAI API credentials, Redis connection details, and OpenWeatherMap API key inside each workflow's respective credential nodes.
 
 ### 4. Run the Ingestion Workflow
-Execute **Load Knowledge Base** once to populate the vector store with the initial 139 chunks.
+Execute **Load Knowledge Base** once to populate the vector store with the initial 292 chunks.
 
 ### 5. Activate the Agent
 Activate **Support Agent** to start handling live queries, and **Auto Data Refresh** to keep the knowledge base current on schedule.

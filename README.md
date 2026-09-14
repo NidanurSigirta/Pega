@@ -1,5 +1,5 @@
 ✈️ PEGA — RAG-Based AI Customer Support Agent for Pegasus Airlines
-<p align="center"><i>Pega Banner</i></p>
+<p align="center"><i></i></p>
 
 **CBOT Internship Case Study #1 — A production-style Retrieval-Augmented Generation (RAG) support agent built on n8n, orchestrating a full knowledge pipeline from ingestion to real-time customer conversation.**
 

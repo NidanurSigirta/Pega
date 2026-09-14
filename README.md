@@ -135,7 +135,7 @@ Activate **Support Agent** to start handling live queries, and **Auto Data Refre
 ---
 
 ## ✒️ Development Team
-**Nidanur Sığırta** — AI Workflow Designer & RAG Architecture
+**Nidanur Sıgırta** 
 
 ## 🛡️ License
 © 2026 PEGA. All rights reserved.

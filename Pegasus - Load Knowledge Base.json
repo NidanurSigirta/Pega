@@ -1,0 +1,139 @@
+{
+  "name": "Pegasus - Load Knowledge Base",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a387148f-e7a8-4e4f-be39-b28752ca5792",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "const destinations = {\n  domestic: \"Adana, Adıyaman, Alanya-Gazipaşa, Ankara, Antalya, Batman, Bingöl, Bodrum-Muğla, Çorlu-Tekirdağ, Dalaman, Denizli, Diyarbakır, Edremit-Balıkesir, Elazığ, Erzincan, Erzurum, Gaziantep, Hatay, Hopa, Iğdır, İstanbul, İzmir, Kars, Kastamonu, Kayseri, Konya, Malatya, Mardin, Merzifon-Amasya, Muş, Nevşehir, Ordu, Rize, Samsun, Sivas, Şanlıurfa, Trabzon, Van\",\n  europe: \"Almanya (Berlin, Bremen, Dortmund, Düsseldorf, Frankfurt, Hamburg, Hannover, Köln, Leipzig, Münih, Nürnberg, Stuttgart) | Arnavutluk (Tiran) | Avusturya (Viyana) | Belçika (Brüksel-Charleroi) | Bosna-Hersek (Saraybosna, Tuzla) | Bulgaristan (Filibe, Sofya) | Çek Cumhuriyeti (Prag) | Danimarka (Kopenhag) | Finlandiya (Helsinki) | Fransa (Lyon, Marsilya, Nice, Paris) | Hırvatistan (Zagreb) | Hollanda (Amsterdam, Eindhoven, Rotterdam) | İngiltere (Birmingham, Londra, Manchester) | İrlanda (Dublin) | İskoçya (Edinburgh) | İspanya (Barselona, Madrid, Sevilla) | İsveç (Stockholm) | İsviçre (Basel, Cenevre, Zürih) | İtalya (Bologna, Milano, Roma, Venedik) | Karadağ (Podgoritsa) | Kosova (Priştine) | KKTC (Lefkoşa) | Kuzey Makedonya (Üsküp) | Macaristan (Budapeşte) | Moldova (Kişinev) | Norveç (Oslo) | Polonya (Krakov, Varşova) | Portekiz (Lizbon) | Romanya (Bükreş, Cluj-Napoca) | Rusya (Grozny, Kazan, Krasnodar, Mahaçkale, Mineralnye Vody, Moskova, St. Petersburg) | Sırbistan (Belgrad) | Slovakya (Bratislava) | Yunanistan (Atina)\",\n  asia: \"Azerbaycan (Bakü, Gence) | Bahreyn (Bahreyn) | BAE (Abu Dabi, Dubai, Resü'l Hayme, Sharjah) | Ermenistan (Erivan) | Gürcistan (Batum, Kutaisi, Tiflis) | Irak (Bağdat, Basra, Erbil) | İran (Tahran, Tebriz) | Katar (Doha) | Kazakistan (Aktau, Almatı, Astana, Çimkent/Shymkent) | Kırgızistan (Bişkek, Oş) | Kuveyt (Kuveyt) | Lübnan (Beyrut) | Pakistan (Karaçi) | Suudi Arabistan (Cidde, Dammam, Medine, Riyad) | Umman (Umman genel) | Ürdün (Amman)\",\n  africa: \"Fas (Kazablanka) | Mısır (Hurgada, İskenderiye, Kahire, Luksor, Marsa Alam, Şarm El-Şeyh)\",\n  rule: \"Bu liste flypgs.com resmi web sitesinden alınan güncel destinasyon verisidir. Agent, bu listede olmayan bir ülke/şehir için seyahat önerisi VERMEMELİDİR; bunun yerine bu ağdaki en yakın/alakalı destinasyonu önermelidir.\"\n};\n\nconst menu = {\n  domestic: \"İÇ HATLAR MENÜSÜ (Fiyatlar TL): \\n- Sıcak Yiyecekler: Mac&Cheese (250 TL), Knorr Domates Çorba (250 TL), Indomie Noodle (250 TL). \\n- Sandviçler: Sezar Soslu Tavuklu (400 TL), Jambonlu Çedarlı (400 TL). \\n- İçecekler: Damla Su (60 TL), Kutu İçecekler (Cola, Fanta, Fusetea, Cappy - 250 TL), Filtre Kahve/Türk Kahvesi/Çay/Cappuccino (250 TL), Red Bull/Nescafe Xpress (300 TL). \\n- Alkol (18+): Efes/Heineken Bira (300 TL), Angora Şarap (400 TL), JP Chenet Şarap (500 TL), Absolut/Jack Daniel's/Chivas Regal (550 TL).\\n- Atıştırmalık: Cips (Master Potato - 250 TL), Kuruyemiş/Çikolata çeşitleri (150-250 TL).\\n- ÖNEMLİ BİLGİ: İç hatlarda bardak su ücretsizdir.\",\n  international: \"DIŞ HATLAR MENÜSÜ (Fiyatlar EUR): \\n- Sıcak Yemekler: Salsa Soslu Tavuk (14 EUR), İzmir Köfte (14 EUR). \\n- Pizza ve Sandviçler: Margarita Pizza (11 EUR), Sezar Tavuklu/Jambonlu Çedarlı Sandviç (11 EUR). \\n- İçecekler: Damla Su (3 EUR), Kutu İçecekler (Cola, Fanta, Meyve Suyu - 5 EUR), Çay/Kahve çeşitleri (5 EUR), Red Bull/Nescafe (8 EUR). \\n- Alkol (18+): Efes/Heineken Bira (7 EUR), Angora Şarap (12 EUR), JP Chenet Şarap (14 EUR), Absolut/Jack Daniel's/Chivas Regal (12 EUR).\\n- Atıştırmalık: Master Potato Cips (7 EUR), Kuruyemiş/Çikolata (5-7 EUR).\\n- ÖNEMLİ BİLGİ: Menü (Yemek+İçecek) olarak alındığında fiyatlar 20-36 EUR arası değişir.\"\n};\n\nconst packages = {\n  domestic: \"Yurt İçi Paketler: Süper Eko (8kg kabin, 15kg uçak altı). Avantaj (8kg kabin, 20kg uçak altı, sandviç, belirli koltuk seçimi). Premium (8kg kabin, 20kg uçak altı, sandviç, tüm koltuklardan seçim).\",\n  international: \"Yurt Dışı ve Kıbrıs Paketleri: Light (sadece 3kg koltuk altı çanta). Süper Eko (3kg koltuk altı, 8kg kabin, 20kg uçak altı). Avantaj (3kg koltuk altı, 8kg kabin, 20kg uçak altı, sandviç, belirli koltuk). Premium (3kg koltuk altı, 8kg kabin, 20kg uçak altı, sandviç, tüm koltuklar).\",\n  upgradeRules: \"Paket Yükseltme: Bilet alındıktan sonra check-in yapana kadar veya uçuşa 1 saat 15 dk kalana kadar yapılabilir. Check-in sonrası yapılamaz. Rezervasyon sonrası 'Comfort Flex' sunulmaz, yerine bilet değişikliği/yükseltme ile alınabilen 'Premium Paket' sunulur. Yükseltmelerde önceden alınan kabin bagajı veya koltuk ücreti iade edilip haklar yeni pakete taşınır. ÖNEMLİ: Light/Süper Eko ile alınan sandviç yeni pakete taşınmaz, iptali için çağrı merkezi (0850 399 17 01) aranmalıdır.\"\n};\n\nconst baggage = \"DETAYLI BAGAJ HAKLARI: \\n- İç Hat Uçak Altı Bagajı: Süper Eko (15 kg), Avantaj ve Premium (20 kg). İç hatlarda Light paket satışı yoktur.\\n- Dış Hat ve Kıbrıs Uçak Altı Bagajı: Light (0 kg). Süper Eko, Avantaj ve Premium (20 kg).\\n- İç Hat Kabin Bagajı: Yalnızca 1 adet (max 55x40x23 cm) kabin bagajı getirilebilir.\\n- Dış Hat ve Kıbrıs Kabin Bagajı: Tüm misafirlerin 1 adet koltuk altına sığacak çanta (max 40x30x15 cm, 3 kg) hakkı vardır. Kabin bagaj hakkı olan bir paket seçilirse veya sonradan satın alınırsa, uçağa sadece 1 adet (max 55x40x23 cm, 8 kg) kabin bagajı getirilebilir.\\n- ÖNEMLİ KURAL: Uçuş öncesi bagaj hakkı kontrol edilmelidir. Ölçü sınırının üzerinde veya ek parça getirilirse uçağa biniş esnasında ekstra ücret tahsil edilir.\";\n\nconst entertainment = \"Fly & Watch (Uçak İçi Eğlence): Sadece yurt dışı ve Kıbrıs uçuşlarında geçerlidir. Misafirler kendi cihazlarıyla (telefon, tablet, bilgisayar) cihazı uçuş moduna alıp 'Pegasus Wi-Fi' ağına bağlanarak fun.flypgs.com adresinden sisteme erişebilir. İçerikler: Filmler, diziler, müzik/podcast, oyunlar, çocuk içerikleri, şehir rehberi ve anlık uçuş bilgileri. Ücretli premium içeriklere fun.flypgs.com üzerinden kredi kartı ile ödeme yapılarak ulaşılabilir.\";\n\nconst seats = \"Koltuk Seçimi Başlangıç Fiyatları: Ekstra Diz Mesafesi (İç hat 299.99 TL, Dış hat 15.99 EUR). Ön Koltuklar (İç hat 279.99 TL, Dış hat 11.99 EUR). Pencere Kenarı (İç hat 169.99 TL, Dış hat 7.99 EUR). Koridor Kenarı ve Diğer Koltuklar (İç hat 149.99 TL, Dış hat 6.99 EUR).\";\n\nconst fastTrack = \"HIZLI GEÇİŞ (FAST TRACK / ALLWAYS): Yalnızca Sabiha Gökçen (SAW) Havalimanı'nda geçerlidir. Güvenlik ve pasaport sıralarında beklemeden hızlı geçiş sağlar. ÖNEMLİ KURAL: Uçağa biniş (boarding) önceliği YOKTUR. Bu paket uçağa binişte öncelik VERMEZ.\\n- Geçerli Noktalar: SAW Terminal girişi, İç Hat Güvenlik asma kat, Dış Hat gidiş (33 nolu banko) ve geliş (18 nolu banko) pasaport kontrol.\\n- Geçerli Hatlar: İç hatlarda sadece SAW çıkışlı Ankara, Antalya, Bodrum. Dış hatlarda SAW çıkışlı Hollanda, İngiltere, İsviçre hatları, Prag, Brüksel ve KKTC uçuşlarında geçerlidir.\\n- İç Hat Paketleri: Fast & Go (Standart Koltuk + FastTrack), Fast & Easy (+5kg + Koltuk + FastTrack), Fast & Flex (Ücretsiz İptal + 5kg + FastTrack).\\n- Dış Hat Paketleri: Fast & Go (Kabin Bagajı + Koltuk + FastTrack), Fast & Easy (20kg + Koltuk + FastTrack), Fast & Flex (Ücretsiz İptal + 20kg + FastTrack).\";\n\nconst faq = [\n  \"İÇ HAT CHECK-IN SÜRECİ (adım adım): (1) Online check-in uçuştan 7 gün önce başlar; PNR ve soyad girilerek mobil uygulama veya web sitesinden yapılır, mobil biniş kartı alınır veya biniş kartı yazdırılır. (2) Online check-in, uçuştan 60 dakika önce kapanır. (3) Bagajı olan yolcular, kontuarlar kapanmadan (uçuştan 45 dakika önce) bagaj teslimini tamamlamalıdır; bagajı olmayanlar doğrudan biniş kartıyla uçağa geçebilir. (4) Yolcu, uçuşa 30 dakika kala biniş kapısında olmalıdır; uçuşa 20 dakika kala kapıda olunmazsa uçuşla ilgili tüm haklar kaybedilir.\",\n  \"DIŞ HAT CHECK-IN SÜRECİ (adım adım): (1) Online check-in uçuştan 7 gün önce başlar; PNR ve soyad girilerek mobil uygulama veya web sitesinden yapılır, mobil biniş kartı alınır veya biniş kartı yazdırılır. (2) Online check-in, uçuştan 60 dakika önce kapanır. (3) Bagajı olan yolcular, kontuarlar kapanmadan (uçuştan 60 dakika önce) bagaj teslimini tamamlamalıdır; bagajı olmayanlar doğrudan biniş kartıyla uçağa geçebilir. (4) Yolcu, uçuşa 40 dakika kala biniş kapısında olmalıdır; uçuşa 20 dakika kala kapıda olunmazsa uçuşla ilgili tüm haklar kaybedilir.\",\n  \"Havalimanı varış: İç hat uçuşlarında kalkıştan en az 2 saat, dış hat uçuşlarında ise en az 3 saat önce havalimanında olunması tavsiye edilir.\",\n  \"Bilet iptal ve değişiklik hakları bilet sınıfına (Light, Süper Eko, Avantaj, Comfort Flex) göre değişir. Sadece Comfort Flex kesintisiz iade ve değişiklik hakkı sunar.\",\n  \"Evcil Hayvan: Kedi, köpek ve kuş gibi küçük evcil hayvanlar (kafes dahil max 8 kg) kabinde ücret karşılığı taşınabilir. Uçuştan önce çağrı merkezinden rezervasyon zorunludur.\",\n  \"Özel Hizmetler: Tekerlekli sandalye veya özel asistanlık hizmetleri için uçuştan en az 48 saat önce talep oluşturulmalıdır.\",\n  \"Sadakat Programı: Pegasus'un sadakat programının adı Pegasus BolBol'dur. Uçuşlardan ve işbirliklerinden BolPuan kazanılır, bu puanlarla bilet alınabilir.\",\n  \"Ödeme Seçenekleri: Kredi kartı, banka kartı ve BolPuan ile bilet ödemesi yapılabilir.\"\n];\n\nconst faqTicketing = [\n  \"Ucuz bilet stratejisi: Erken rezervasyon yapmak, kampanyaları takip etmek, esnek tarih seçmek ve 'Takvim/Grafik' görünümünü kullanarak farklı gün/ayları karşılaştırmak en uygun fiyatı bulmanın yollarıdır.\",\n  \"En ucuz biletler sadece flypgs.com ve resmi mobil uygulamada bulunur; e-bültene abone olup bildirimleri açık tutarak kampanyalardan bir gün önce haberdar olunabilir.\",\n  \"Fiyat Sabitleme: Kararsız kalınan bir bilet fiyatı belirli bir ücret karşılığında geçici süreliğine dondurulabilir. Ancak fiyat sabitleme sadece o spesifik uçuş için geçerlidir; farklı bir tarihe uçuş değişikliği yapılırsa bu hak geçersiz olur.\",\n  \"Online bilet rezervasyonu flypgs.com veya mobil uygulama üzerinden kalkış/varış havalimanı ve tarih seçilerek birkaç adımda yapılabilir.\",\n  \"Pegasus BolBol sadakat programı avantajları: ilk uçuşa özel 1000 BolPuan, harcamalarla BolPuan biriktirme, doğum günü indirimleri ve puanla bilet satın alma imkânı sunar.\",\n  \"PNR ile bilet sorgulama: flypgs.com'daki 'Bilet İşlemleri' sayfasına PNR numarası ve soyadı girilerek rezervasyon detayları görüntülenebilir, iptal/değişiklik yapılabilir. BolBol üyeleri mobil uygulamada 'Uçuşlarım' sekmesinden PNR girmeden işlem yapabilir.\",\n  \"Rezervasyon değişikliği: Online alınan biletlerde değişiklik ücretsizdir, sadece bilet ücret sınıfına bağlı fiyat farkı ödenebilir. Acente/çağrı merkezinden alınan biletler için 0888 228 12 12 aranmalıdır.\",\n  \"Rezervasyon iptali: flypgs.com/mobil uygulamadan alınan biletler 'Bilet İşlemlerim' sayfasından PNR ve soyadı girilerek iptal edilebilir; acente/çağrı merkezi biletleri için aynı telefon hattı kullanılır.\",\n  \"Bilet alırken dikkat edilmesi gerekenler: sitenin güvenilirliği, 3D Secure ödeme, kalkış-varış saat/tarih kontrolü ve ek hizmetlerin (bagaj, koltuk, yemek) bilette yer alıp almadığının teyit edilmesi önerilir.\"\n];\n\nconst faqFastTrack = [\n  \"Fast Track kullanım hakkı, iletildikten sonra 48 saat süreyle geçerlidir. Bilet iptal edilirse veya değişiklik yapılırsa QR kod geçerliliğini kaybeder; değişiklik yapılan yeni hatta da Fast Track varsa yeni bir kod gönderilir.\",\n  \"SORU: Fast Track hakkı başkasına devredilebilir mi? CEVAP: HAYIR, devredilemez. Fast Track hakkı kişiye özel değildir, uçuşa özeldir. Bu nedenle bir başkasına aktarılamaz ve üzerinde isim değişikliği yapılamaz.\",\n  \"Fast Track hakkı tek kullanımlıktır. SAW kalkışlı uçuşlarda hem terminal girişinde hem iç/dış hat girişinde kullanılabilir; ilk kapıdan sonra 3 saat içinde ikinci kapıdan geçilmesi gerekir. SAW varışlı uçuşlarda sadece dış hat gelen yolcu pasaport kontrolünde geçerlidir.\",\n  \"Fast Track hizmeti, Sabiha Gökçen transfer noktalarında sağlanamadığı için aktarmalı (bağlantılı) uçuşlarda satışa sunulmaz.\",\n  \"Fast Track kullanılmazsa iade, genel paket iptal/değişiklik kurallarına tabidir.\",\n  \"Karekod teknik nedenlerle görüntülenemezse veya kullanılamazsa, çıktı (print-out) alternatif olarak kullanılabilir.\"\n];\n\nconst faqCheckin = [\n  \"Kiosk Check-in: Sadece el bagajıyla seyahat edenler, Pegasus Self Servis kiosklarından hızlıca check-in yapıp biniş kartı alabilir. Valizi olanlar, uçuş kartı aldıktan sonra 'Online Check-in & Bag Drop' kontuarlarından sıra beklemeden bagaj teslim edebilir. Kiosklar Adana, Ankara, Antalya, Bodrum, Dalaman, İstanbul (Atatürk/Sabiha Gökçen), İzmir, Konya ve Lefkoşa-Ercan havalimanlarında bulunur.\",\n  \"Havalimanına varış: Kalkış saatinden en az 2 saat önce havalimanında olunması önerilir. Kontuarda check-in ve bagaj teslimi, iç hatlarda uçuşa 45 dakika, KKTC ve dış hatlarda 60 dakika kalana kadar yapılabilir; bu süreye kadar işlem tamamlanmazsa uçuşla ilgili tüm haklar kaybedilir.\",\n  \"İç Hat Check-in için Kabul Edilen Kimlikler: Nüfus cüzdanı, ehliyet, pasaport, veya (ebeveyn kimliğiyle birlikte) doğumdan 1 ay sonrasına kadar doğum belgesi. Kimlik fotokopisi, faksı veya internetten alınan TC kimlik no çıktısı KABUL EDİLMEZ.\",\n  \"Dış Hat Check-in: Mutlaka pasaport gereklidir. Kıbrıs uçuşlarında pasaport veya kimlik gereklidir, EHLİYET İLE UÇUŞ YAPILAMAZ. 18 yaşını doldurmamış çocuklar Kıbrıs'a yalnız T.C. Nüfus Cüzdanı ile seyahat edecekse, yanında olmayan ebeveynin noter/resmi tasdikli vekaletnamesi gereklidir.\",\n  \"Özel Kontuar Kapanış Kuralı: Tel Aviv, Paris-Orly ve Süleymaniye havalimanlarındaki kontuarlar, uçuştan 1 saat önce kapanır (standart sürelerden farklıdır).\",\n  \"PNR Kodu Nedir: Rezervasyon kodu (PNR - Passenger Name Record), bilet alımı sonrası verilen harf/rakam kombinasyonudur. Check-in ve bilet sorgulama için kullanılır. E-mail veya SMS ile paylaşılır; BolBol üyeleri mobil uygulamada 'Uçuşlarım' sekmesinden de görebilir.\",\n  \"Online check-in sonrası bilet yazdırmaya gerek yoktur; mobil biniş kartı ile uçağa binilebilir, bilet ayrıca e-postaya da gönderilir.\",\n  \"Check-in Koltuk Seçimi: Check-in sırasında rastgele bir koltuk ÜCRETSİZ olarak atanır. Belirli bir koltuk seçmek isteyenler için koltuk seçimi ÜCRETLİDİR.\",\n  \"Check-in Yapılmazsa: Check-in, uçağa kabul için zorunludur. Sadece bilet almış olmak yeterli değildir; koltuk/bagaj eşleştirmesi için check-in şarttır, yapılmazsa yolcu uçağa kabul edilmez.\"\n]; \n\nconst cultural = [\n  \"Tiflis, Gürcistan: Türkiye Cumhuriyeti vatandaşları pasaportsuz, sadece yeni tip çipli kimlik kartı ile seyahat edebilir. Şarap kültürü köklüdür.\",\n  \"Bakü, Azerbaycan: Misafirperverlik çok önemlidir, ikram reddedilmemelidir. (Vize/giriş kuralları için otomatik güncellenen resmi kaynak verisine bakınız.)\",\n  \"KKTC (Kuzey Kıbrıs): Türkiye'den gidişlerde pasaporta gerek yoktur, yeni tip çipli kimlik kartı ile giriş yapılabilir. Trafik soldan akar.\",\n  \"Dubai, BAE: Muhafazakar giyim kurallarına dikkat edilmeli. Kamuya açık alanlarda alkol tüketimi yasaktır.\",\n  \"Amsterdam, Hollanda: Bisikletli ulaşım çok yaygındır. Yaya olarak bisiklet yollarında yürümek tehlikelidir ve hoş karşılanmaz.\",\n  \"Roma, İtalya: Vatikan ve tarihi kilise ziyaretlerinde omuzları ve dizleri kapatan kıyafetler giyilmesi zorunludur.\"\n];\n\nconst items = [];\n\n// --- DÜZELTİLEN KISIM: MICRO-CHUNKING (Rusya Probleminin Kesin Çözümü) ---\nitems.push({ json: { pageContent: `PEGASUS İÇ HAT UÇUŞ NOKTALARI: ${destinations.domestic}`, metadata: { source: \"destinations_domestic\" } } });\n\ndestinations.europe.split(\" | \").forEach(country => {\n  items.push({ json: { pageContent: `PEGASUS AVRUPA DESTİNASYONU: ${country}`, metadata: { source: \"destinations_europe\" } } });\n});\n\ndestinations.asia.split(\" | \").forEach(country => {\n  items.push({ json: { pageContent: `PEGASUS ASYA DESTİNASYONU: ${country}`, metadata: { source: \"destinations_asia\" } } });\n});\n\ndestinations.africa.split(\" | \").forEach(country => {\n  items.push({ json: { pageContent: `PEGASUS AFRİKA DESTİNASYONU: ${country}`, metadata: { source: \"destinations_africa\" } } });\n});\n\nitems.push({ json: { pageContent: `DESTİNASYON KURALI:\\n${destinations.rule}`, metadata: { source: \"destinations_rule\" } } });\n// ---------------------------------------------------------------------------------------------\n\nitems.push({ json: { pageContent: `PEGASUS YEMEK MENÜSÜ:\\nİç hat: ${menu.domestic}\\nDış hat: ${menu.international}`, metadata: { source: \"menu\" } } });\nitems.push({ json: { pageContent: `PEGASUS PAKET VE YÜKSELTME KURALLARI:\\n${packages.domestic}\\n${packages.international}\\n${packages.upgradeRules}`, metadata: { source: \"packages\" } } });\nitems.push({ json: { pageContent: `${baggage}`, metadata: { source: \"baggage_rules\" } } });\nitems.push({ json: { pageContent: `UÇAK İÇİ EĞLENCE SİSTEMİ:\\n${entertainment}`, metadata: { source: \"entertainment\" } } });\nitems.push({ json: { pageContent: `KOLTUK SEÇİMİ VE ÜCRETLERİ:\\n${seats}`, metadata: { source: \"seats\" } } });\nitems.push({ json: { pageContent: `${fastTrack}`, metadata: { source: \"fast_track\" } } });\n\nfaq.forEach((f, i) => {\n  items.push({ json: { pageContent: `SSS: ${f}`, metadata: { source: \"faq_general\", index: i } } });\n});\n\nfaqTicketing.forEach((f, i) => {\n  items.push({ json: { pageContent: `SSS: ${f}`, metadata: { source: \"faq_ticketing\", index: i } } });\n});\n\nfaqFastTrack.forEach((f, i) => {\n  items.push({ json: { pageContent: `SSS: ${f}`, metadata: { source: \"faq_fasttrack\", index: i } } });\n});\n\nfaqCheckin.forEach((f, i) => {\n  items.push({ json: { pageContent: `SSS: ${f}`, metadata: { source: \"faq_checkin\", index: i } } });\n});\n\ncultural.forEach((c, i) => {\n  items.push({ json: { pageContent: `KÜLTÜREL BİLGİ: ${c}`, metadata: { source: \"cultural\", index: i } } });\n});\n\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c488fa1e-e264-493b-872d-4dbab09f7748",
+      "name": "Prepare Documents"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "value": "pegasus_kb",
+          "mode": "list",
+          "cachedResultName": "pegasus_kb"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "fac6ef08-9ec1-4611-9704-3a0d19a4dc03",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        352,
+        224
+      ],
+      "id": "7ff97007-f654-43f0-abda-8468acea14e6",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "x1ynkU3GHsWov0dP",
+          "name": "Telegram n8n bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        576,
+        224
+      ],
+      "id": "646ed124-5c02-47be-b553-696ad5339594",
+      "name": "Default Data Loader"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Prepare Documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Documents": {
+      "main": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6cfced2d-38df-4b4a-9888-aa60a2bf09c2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "13dc5236432b2b526a43388d394b6c8668208af8d8804d352a2e33d3039fc231"
+  },
+  "id": "j5sJbt3RtJOBLKbf",
+  "tags": []
+}

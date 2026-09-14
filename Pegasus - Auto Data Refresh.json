@@ -1,0 +1,197 @@
+{
+  "name": "Pegasus - Auto Data Refresh",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3a14cae1-47f2-4d04-b112-c7c8845c084b",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://www.flypgs.com/ulkeler/azerbaycan-ucak-bileti",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "bc46b3d0-b2c6-4c06-98e3-87c1b984b11c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {},
+            {
+              "key": "faq_text",
+              "cssSelector": ".c-accordion--v2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "0204bd94-9454-43e0-b35d-cb8230851436",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawText = $input.first().json.faq_text;\n\n// Fazla boşlukları ve satır sonlarını temizle\nconst cleaned = rawText\n  .replace(/\\n{2,}/g, '\\n')\n  .replace(/\\s{2,}/g, ' ')\n  .trim();\n\nreturn [{\n  json: {\n    pageContent: `AZERBAYCAN SEYAHAT BİLGİLERİ (flypgs.com'dan otomatik çekildi):\\n${cleaned}`,\n    metadata: { source: \"auto_scraped_azerbaycan\", scraped_at: new Date().toISOString() }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "dc0a6529-fa31-41b0-a8b2-d2f88aae7e3f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        832,
+        0
+      ],
+      "id": "3d8d3329-5692-4655-8bf4-2349e0c25145",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1008,
+        208
+      ],
+      "id": "4bf71b9e-ed90-412d-9664-33fdc4983031",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        832,
+        208
+      ],
+      "id": "105a9951-8116-4238-8b9b-2cd63857dd4c",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "26nfPhOXXiHAIAxI",
+          "name": "OpenAI account pegasus"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "9b742ce9-9783-4e43-a5e5-33cf5f3b9182",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "13dc5236432b2b526a43388d394b6c8668208af8d8804d352a2e33d3039fc231"
+  },
+  "id": "wSEiebQQcQ0dWrPs",
+  "tags": []
+}

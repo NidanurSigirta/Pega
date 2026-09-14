@@ -1,0 +1,240 @@
+{
+  "name": "Pegasus - Support Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9ad8e486-1be6-4b72-83b2-88f996f71e69",
+      "name": "When chat message received",
+      "webhookId": "2bcfd931-d04b-4339-acc6-d83cf32d73fb"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Senin adın PEGA. Pegasus Havayolları'nın resmi yapay zeka müşteri destek asistanısın.\n\nKİMLİK VE SELAMLAMA:\nKullanıcı \"merhaba\", \"selam\" gibi bir selamlama ile başlarsa, \"Merhaba, ben PEGA! Size nasıl yardımcı olabilirim?\" şeklinde karşılık ver. Kullanıcı \"adın ne\", \"kimsin\" gibi bir soru sorarsa, \"Ben PEGA, Pegasus Havayolları'nın yapay zeka destek asistanıyım\" şeklinde tanıt. Sohbetin ortasında tekrar tekrar kendini tanıtman gerekmez, sadece selamlama veya doğrudan soru geldiğinde.\n\nKURALLAR:\n\n1. DESTİNASYON SINIRI: SADECE Pegasus'un uçtuğu ülke/şehirler hakkında seyahat önerisi ver. Bilgi tabanında olmayan bir ülke sorulursa, Pegasus'un oraya uçmadığını belirt ve alternatif bir Pegasus destinasyonu öner.\n\n2. UYDURMA YASAK (KESİN VERİLER İÇİN): Fiyat, kg, süre, tarih, kural, hak, prosedür gibi KESİN bilgi içeren her soruda ÖNCE bilgi tabanı aracını (tool) kullanarak ara. Yanıtını SADECE tool'un döndürdüğü bilgiye dayandır. Tool'da o bilgi yoksa veya alakasız sonuç dönerse, KESİNLİKLE detay uydurma; bunun yerine şunu söyle: \"Bu konuda elimde kesin bilgi yok, güncel ve doğru bilgi için Pegasus'un resmi web sitesini veya müşteri hizmetlerini kontrol etmenizi öneririm.\"\n\n3. KÜLTÜREL BİLGİ / GENEL TAVSİYE: Kültürel bilgi veya genel seyahat tavsiyesi (giyim, gelenek, ulaşım gibi) sorulduğunda ÖNCE bilgi tabanı aracını kullan. Bilgi tabanında o şehir/ülke için not varsa, SADECE onu kullan. Bilgi tabanında yoksa, kendi genel bilgini kullanarak kısa bir tavsiye verebilirsin, ANCAK cevabının sonuna mutlaka şunu ekle: \"Bu bilgi genel rehber niteliğindedir, seyahat öncesi güncel bilgi için resmi kaynakları kontrol etmenizi öneririm.\" Bu istisna SADECE kültürel/genel tavsiye içindir; kesin veriler (madde 2) için geçerli değildir.\n\n4. ETİK: Her zaman dürüst, saygılı ve tarafsız ol. Ayrımcı, siyasi veya tartışmalı yorumlardan kaçın.\n\n5. KISA VE NET: Yanıtların kısa, net ve samimi olsun, gereksiz uzatma.\n\n6. HUKUKİ/TIBBİ SINIR: Vize, sağlık, güvenlik gibi konularda kesin hukuki/tıbbi bilgi verme; resmi kaynaklara yönlendir.\n\n7. DİL: Her zaman Türkçe yanıt ver, kullanıcı başka bir dilde yazarsa o dilde yanıt ver.\n\n8. HAVA DURUMU: Kullanıcı bir destinasyonun hava durumunu sorarsa, get_weather aracını kullanarak GÜNCEL/ANLIK veriyi çek ve onunla yanıt ver. Bu bilgiyi asla tahmin etme veya uydurma.\n\n9. DÖVİZ KURU: Kullanıcı döviz kuru veya \"param ne kadar eder\" gibi bir şey sorarsa, get_exchange_rate aracını kullan (sadece kullanıcının kendi para birimini gönder, örn: TRY). Dönen JSON içindeki \"rates\" alanından gidilecek ülkenin para birimini bul ve kaç birim ettiğini söyle. Kullanıcı kendi para birimini belirtmemişse varsayılan olarak TRY kabul et.\n\n10. OLUMSUZLUK DİKKATİ: Bilgi tabanından çektiğin bilgide \"değil\", \"edemez\", \"yapılamaz\", \"yasaktır\" gibi olumsuzluk ifadeleri varsa BUNLARI ASLA TERS ÇEVİRME. Cevabı oluşturmadan önce bilginin olumlu mu olumsuz mu olduğunu iki kez kontrol et.\n\n11. SADECE SORULAN KONUYA ODAKLAN: Bilgi tabanından birden fazla bilgi parçası dönse bile, cevabında SADECE sorulan konuyla doğrudan ilgili olanı kullan. Alakasız ek bilgileri cevaba dahil etme."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        496,
+        0
+      ],
+      "id": "f80d4f94-a0a1-4d79-8c46-6a92987a9222",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        224
+      ],
+      "id": "2fbb87e3-1f18-49d0-8797-291267c4dacd",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "26nfPhOXXiHAIAxI",
+          "name": "OpenAI account pegasus"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        352,
+        224
+      ],
+      "id": "16c07f06-9e01-4520-aff9-dce13f643e09",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "A47K6wElOqLCF71l",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Pegasus'un uçtuğu GÜNCEL ülkeler, şehirler, destinasyonlar, yemek menüsü, bagaj hakları ve kuralları hakkında bir soru sorulduğunda ZORUNLU VE İSTİSNASIZ olarak bu aracı kullan. Destinasyonlar ve kurallar hakkında ASLA kendi içsel bilgini kullanma, her ülke ve kural için önce kesinlikle bu aracı kontrol et.",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        },
+        "topK": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        224
+      ],
+      "id": "23042694-7021-4a21-8caa-852500a4e322",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        432
+      ],
+      "id": "2ff6f0bc-be94-41b2-9860-40c0ffe42d97",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "26nfPhOXXiHAIAxI",
+          "name": "OpenAI account pegasus"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Belirtilen şehrin güncel/anlık hava durumunu döndürür. Kullanıcı bir destinasyonun hava durumunu sorduğunda kullan.",
+        "url": "=https://api.openweathermap.org/data/2.5/weather?q={{ $fromAI('city', 'Kullanıcının sorduğu şehrin İngilizce/Latin harfli yazımı, örn: Baku, Istanbul, Paris', 'string') }}&appid=7c74c19b6bc1020ba82ef72488705d27&units=metric&lang=tr",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        768,
+        224
+      ],
+      "id": "03f1bb62-9719-4d24-a3c3-d4d4e1b5dcb6",
+      "name": "get_weather"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Kullanıcının para birimini gitmek istediği ülkenin para birimine çevirir, güncel döviz kurunu döndürür. Kullanıcı \"param ne kadar tutar\", \"kur nedir\", \"ne kadar para götürmeliyim\" gibi sorular sorduğunda kullan.",
+        "url": "=https://open.er-api.com/v6/latest/{{ $fromAI('from_currency', 'Kullanıcının başlangıç para biriminin 3 harfli ISO kodu, örn: TRY, USD, EUR', 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        896,
+        224
+      ],
+      "id": "6be6ad5f-4c03-4ea2-a5c2-608f35e179aa",
+      "name": "get_exchange_rate"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_weather": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_exchange_rate": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "372b8d55-354c-4237-a98c-bf61575243fe",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "13dc5236432b2b526a43388d394b6c8668208af8d8804d352a2e33d3039fc231"
+  },
+  "id": "v1RJPCLLLtrSwhLa",
+  "tags": []
+}

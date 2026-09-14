@@ -134,7 +134,7 @@ Activate **Support Agent** to start handling live queries, and **Auto Data Refre
 
 ---
 
-## ✒️ Development Team
+## ✒️ Developer
 **Nidanur Sıgırta** 
 
 ## 🛡️ License

@@ -136,8 +136,3 @@ Activate **Support Agent** to start handling live queries, and **Auto Data Refre
 
 ## Developer
 **Nidanur Sıgırta** 
-
-## 🛡️ License
-© 2026 PEGA. All rights reserved.
-
-*Grounding Conversations in Real Knowledge*

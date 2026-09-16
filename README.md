@@ -19,7 +19,7 @@ Rather than a single monolithic workflow, PEGA is architected as **three coopera
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 - **Retrieval-Augmented Generation:** Combines OpenAI embeddings with a Simple Vector Store so responses are grounded in real Pegasus Airlines knowledge, not model hallucination.
 - **Micro-Chunked Knowledge Base:** 292 finely segmented knowledge items, restructured from an initial coarse layout after diagnosing a real retrieval failure (see *Embedding Dilution* below) — a concrete example of iterating on architecture based on evidence, not just intuition.
@@ -33,20 +33,20 @@ Rather than a single monolithic workflow, PEGA is architected as **three coopera
 
 ---
 
-## 🧩 Workflow Architecture
+##  Workflow Architecture
 
-### 1. 📥 Load Knowledge Base
+### 1. Load Knowledge Base
 Ingests the raw Pegasus Airlines knowledge base, splits it into 292 micro-chunks, generates OpenAI embeddings for each chunk, and writes them into the Simple Vector Store — establishing the retrieval foundation for the agent.
 
-### 2. 🔄 Auto Data Refresh
+### 2. Auto Data Refresh
 A scheduled workflow that scrapes the live source website (HTTP request → HTML extraction via CSS selector → content parsing) and appends newly discovered information to the vector store, keeping retrieved answers current as underlying information changes — without needing to rerun ingestion manually or wait for a manual data update.
 
-### 3. 💬 Support Agent
+### 3. Support Agent
 The customer-facing conversational workflow. Receives a user query, retrieves the most relevant chunks from the vector store, consults Redis for prior conversation context, optionally calls live weather/currency tools, and generates a grounded response via gpt-4o-mini under an 11-rule guardrail system prompt — the core RAG loop in action.
 
 ---
 
-## 🔬 Engineering Deep Dive
+## Engineering Deep Dive
 
 This section documents problems that were not explicitly requested by the case brief, but were discovered through systematic testing and treated as engineering responsibilities of the role.
 
@@ -72,7 +72,7 @@ The final system was validated against 25+ manually written test scenarios spann
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 | Technology | Purpose |
 |---|---|
@@ -104,7 +104,7 @@ pega/
 
 ---
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - [n8n](https://n8n.io/) (self-hosted or desktop)
@@ -134,7 +134,7 @@ Activate **Support Agent** to start handling live queries, and **Auto Data Refre
 
 ---
 
-## ✒️ Developer
+## Developer
 **Nidanur Sıgırta** 
 
 ## 🛡️ License
